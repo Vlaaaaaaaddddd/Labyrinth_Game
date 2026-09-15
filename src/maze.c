@@ -3,15 +3,15 @@
 
 #include "maze.h"
 
-const int wall_chance = 30
-
-void init_game_map(GameState *game){ 
-    //инициализировали генератор случайных чисел
+void init_game_map(GameState *game) { 
+    // инициализировали генератор случайных чисел
     srand(time(NULL)); 
 
+    int wall_chance = 30;
+
     // Заполнили сетку 
-    for (int y = 0; y <= HEIGHT; y++){
-        for (int x = 0; x <= WIDTH; x++){
+    for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
             if (y == 0 || y == HEIGHT - 1 || x == 0 || x == WIDTH - 1) { 
                 game->grid[y][x] = CELL_WALL;
             }
@@ -30,7 +30,7 @@ void init_game_map(GameState *game){
     game->end = (Point){WIDTH - 3, HEIGHT - 3};
     game->player = game->start;
 
-    // Убираем препязствия на старте и финише
+    // Убираем препятствия на старте и финише
     game->grid[game->start.y][game->start.x] = CELL_START;
     game->grid[game->end.y][game->end.x] = CELL_END;
 
