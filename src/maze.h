@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 // Размеры поля
-#define WIDTH 40
-#define HEIGHT 20
+#define WIDTH 16
+#define HEIGHT 16
 
 // Типы клеток
 typedef enum {
