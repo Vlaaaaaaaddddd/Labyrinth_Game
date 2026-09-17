@@ -36,6 +36,7 @@ int main(void) {
         if (game.grid[next_y][next_x] != CELL_WALL) {
             game.player.x = next_x;
             game.player.y = next_y;
+            game.grid[next_y][next_x] = CELL_CORD;
         }
 
         // Отрисовка текущего состояния
