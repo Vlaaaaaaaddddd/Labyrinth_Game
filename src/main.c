@@ -14,20 +14,28 @@ int main(void) {
 
     while ((ch = getch()) != 'q')
     {
-        switch (ch) 
-        {
+
+        int next_x = game.player.x;
+        int next_y = game.player.y;
+
+        switch (ch) {
             case KEY_UP:
-                game.player.y--; // Двигаем вверх
+                next_y--;
                 break;
             case KEY_DOWN:
-                game.player.y++; // Двигаем вниз
+                next_y++;
                 break;
             case KEY_LEFT:
-                game.player.x--; // Двигаем влево
+                next_x--;
                 break;
             case KEY_RIGHT:
-                game.player.x++; // Двигаем вправо
+                next_x++;
                 break;
+        }
+
+        if (game.grid[next_y][next_x] != CELL_WALL) {
+            game.player.x = next_x;
+            game.player.y = next_y;
         }
 
         // Отрисовка текущего состояния
