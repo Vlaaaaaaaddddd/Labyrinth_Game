@@ -33,12 +33,42 @@ int main(void) {
                 break;
         }
 
-        if (game.grid[next_y][next_x] != CELL_WALL) {
-            game.player.x = next_x;
-            game.player.y = next_y;
-            game.grid[next_y][next_x] = CELL_CORD;
+        if (game.grid[next_y][next_x] == CELL_END) {
+            game.game_won = true;
         }
 
+        if ((next_x != game.player.x || next_y != game.player.y) 
+             && game.grid[next_y][next_x] != CELL_WALL) {
+            if (game.path_size > 1 &&
+                next_x == game.path[game.path_size - 2].x && 
+                next_y == game.path[game.path_size - 2].y) {
+                    if (game.grid[game.player.y][game.player.x] == CELL_CORD) {
+                        game.grid[game.player.y][game.player.x] = CELL_EMPTY;
+                    }
+                    game.path_size--;
+                    game.cord_left++;
+                    game.player.x = next_x;
+                    game.player.y = next_y;
+                }
+
+            else if (game.cord_left > 0) {
+                if (game.grid[next_y][next_x] == CELL_EMPTY) {
+                    game.grid[next_y][next_x] = CELL_CORD;
+                }
+                
+                game.player.x = next_x;
+                game.player.y = next_y;
+                
+                game.path[game.path_size] = (Point){next_x, next_y};
+                game.path_size++;
+                game.cord_left--;
+            }
+    }
+
+    if (game.cord_left <= 0){
+                game.game_over = true;
+            } 
+            
         // Отрисовка текущего состояния
         draw_game(&game);
     }

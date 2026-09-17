@@ -29,6 +29,8 @@ typedef struct {
     Point start;
     Point end;
     Point player;
+    Point path[WIDTH * HEIGHT]; //стек, история пути
+    int path_size; // количество потраченных 
     int max_cord_length; //максимальная длина провода 
     int cord_left; //остаток провода
     bool game_over;
