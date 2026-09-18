@@ -69,6 +69,16 @@ void draw_game(const GameState *game){
     mvprintw(HEIGHT + 1, 0, "Cord left: %d/%d", game->cord_left, game->max_cord_length);
     mvprintw(HEIGHT + 2, 0, "Press 'q' to quit.");
 
+    if (game->game_won) {
+        attron(COLOR_PAIR(2));
+        mvprintw(HEIGHT + 4, 0, "YOU WIN! Power connected!");
+        attroff(COLOR_PAIR(2));
+    } else if (game->game_over) {
+        attron(COLOR_PAIR(3));
+        mvprintw(HEIGHT + 4, 0, "GAME OVER! Out of cord!");
+        attroff(COLOR_PAIR(3));
+    }
+
     refresh();
 }
 

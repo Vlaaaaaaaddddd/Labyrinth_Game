@@ -39,4 +39,6 @@ void init_game_map(GameState *game) {
     game->cord_left = 50;
     game->game_over = false;
     game->game_won = false;
+    game->path[0] = game->start; //Первая точка в истории провода 
+    game->path_size = 1;
 }
