@@ -28,9 +28,13 @@ typedef struct {
     CellType grid[HEIGHT][WIDTH];
     Point start;
     Point end;
+
     Point player;
     Point path[WIDTH * HEIGHT]; //стек, история пути
     int path_size; // количество потраченных 
+
+    Point optimal_path[WIDTH * HEIGHT];
+    int optimal_path_len;
     int max_cord_length; //максимальная длина провода 
     int cord_left; //остаток провода
     bool game_over;

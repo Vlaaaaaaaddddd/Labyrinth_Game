@@ -65,13 +65,14 @@ static int heuristic(Point a, Point b) {
     return abs(a.x - b.x) + abs(a.y - b.y);
 }
 
-int find_shortest_path(const GameState *game, Point start, Point end){
+int find_shortest_path(const GameState *game, Point start, Point end, Point out_path[], int *out_path_len){
     int g_score[HEIGHT][WIDTH]; 
     bool closed_set[HEIGHT][WIDTH];
+    Point came_from[HEIGHT][WIDTH]; //Откуда пришли, восстановление пути 
 
-    for (int i = 0; i < HEIGHT; i++){ 
-        for (int j = 0; j < WIDTH; j++){
-            g_score[i][j] = 9999;
+    for (int y = 0; y < HEIGHT; y++){ 
+        for (int x = 0; x < WIDTH; x++){
+            g_score[y][x] = 9999;
             closed_set[y][x] = false;
         }
     }
@@ -93,9 +94,27 @@ int find_shortest_path(const GameState *game, Point start, Point end){
 
         //если точка финиш
         if (current.x == end.x && current.y == end.y) {
+            int len = 0;
+            Point curr = end;
+
+            // Восстанавливаем путь от финиша к старту
+            while (curr.x != -1 && curr.y != -1) {
+                out_path[len++] = curr;
+                if (curr.x == start.x && curr.y == start.y){
+                    break;
+                }
+                curr = came_from[curr.y][curr.x];
+            }
+
+            // Разворачиваем путь, чтобы он шел от старта к финишу
+            for (int i = 0; i < len / 2; i++) {
+                Point temp = out_path[i];
+                out_path[i] = out_path[len - 1 - i];
+                out_path[len - 1 - i] = temp;
+            }
+            if (out_path_len) *out_path_len = len;
             return g_score[current.y][current.x];
         }
-
         // Помечаем точку как посещенную
         closed_set[current.y][current.x] = true;
 
@@ -124,10 +143,13 @@ int find_shortest_path(const GameState *game, Point start, Point end){
 
             if (tentative_g < g_score[neighbor.y][neighbor.x]) {
                 g_score[neighbor.y][neighbor.x] = tentative_g;
+                came_from[neighbor.y][neighbor.x] = current;
                 int f_score = tentative_g + heuristic(neighbor, end);
                 heap_push(&open_set, neighbor, f_score);
             }
+        }
     }
-
+    
+    if (out_path_len) *out_path_len = 0;
     return -1;
 }

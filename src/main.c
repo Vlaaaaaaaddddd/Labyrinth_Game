@@ -14,6 +14,9 @@ int main(void) {
 
     while ((ch = getch()) != 'q')
     {
+        if (game.game_over || game.game_won) {
+            continue;
+        }
 
         int next_x = game.player.x;
         int next_y = game.player.y;
@@ -65,10 +68,9 @@ int main(void) {
             }
     }
 
-    if (game.cord_left <= 0){
+    if (game.cord_left <= 0 && !game.game_won){
                 game.game_over = true;
-            } 
-            
+    }       
         // Отрисовка текущего состояния
         draw_game(&game);
     }

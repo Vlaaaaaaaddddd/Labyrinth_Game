@@ -10,6 +10,6 @@ typedef struct {
     int f; //f = g + h
 } AStarNode;
 
-int find_shortest_path(const GameState *game, Point start, Point end);
+int find_shortest_path(const GameState *game, Point start, Point end, Point out_path[], int *out_path_len);
 
 #endif

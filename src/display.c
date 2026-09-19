@@ -15,6 +15,7 @@ void init_display(void){
         init_pair(2, COLOR_GREEN, COLOR_BLACK);  // Старт
         init_pair(3, COLOR_RED, COLOR_BLACK);    // Финиш
         init_pair(4, COLOR_YELLOW, COLOR_BLACK); // Игрок / провод
+        init_pair(5, COLOR_CYAN, COLOR_BLACK);   // Оптимальный путь
     }
 }
 
@@ -22,6 +23,7 @@ void draw_game(const GameState *game){
     attrset(A_NORMAL); //сброс атрибутов
     bkgd(COLOR_PAIR(0));
     clear();
+
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             CellType cell = game->grid[y][x];
@@ -77,6 +79,20 @@ void draw_game(const GameState *game){
         attron(COLOR_PAIR(3));
         mvprintw(HEIGHT + 4, 0, "GAME OVER! Out of cord!");
         attroff(COLOR_PAIR(3));
+
+        attron(COLOR_PAIR(5)); 
+        for (int i = 0; i < game->optimal_path_len; i++) {
+            Point pt = game->optimal_path[i];
+            
+            // Не зарисовываем старт и финиш
+            if ((pt.x == game->start.x && pt.y == game->start.y) ||
+                (pt.x == game->end.x && pt.y == game->end.y)) {
+                continue;
+            }
+
+            mvaddch(pt.y, pt.x, '.');
+        }
+        attroff(COLOR_PAIR(5));
     }
 
     refresh();
